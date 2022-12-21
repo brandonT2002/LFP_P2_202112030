@@ -1,14 +1,14 @@
 class GLC:
     def __init__(self):
         self.name = None
-        self.nonTerminal = None
+        self.nonTerminals = None
         self.terminals = None
         self.initialNonTerminal = None
         self.productions = None
 
-class Produccion:
-    def __init__(self,origin,entrance1,destiny = '',entrance2 = ''):
+class Production:
+    def __init__(self,origin,input1 = '',destiny = '',input2 = ''):
         self.origin = origin
-        self.entrance1 = entrance1
+        self.input1 = input1
         self.destiny = destiny
-        self.entrance2 = entrance2
+        self.input2 = input2
