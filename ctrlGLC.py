@@ -6,7 +6,7 @@ class ControllerGLC:
         self.line = 0
 
     # Lectura del archivo y creación de objetos
-    def drawLine(self):
+    def popLine(self):
         try:
             return self.inputFile.pop(0)
         except:
@@ -21,35 +21,44 @@ class ControllerGLC:
     def identifyElements(self):
         if self.line == 0:
             self.grammar = GLC()
-            self.grammar.name = self.drawLine()
+            self.grammar.name = self.popLine()
         elif self.line == 1:
-            self.grammar.nonTerminals = self.drawLine().split(',')
+            self.grammar.nonTerminals = self.popLine().split(',')
         elif self.line == 2:
-            self.grammar.terminals = self.drawLine().split(',')
+            self.grammar.terminals = self.popLine().split(',')
         elif self.line == 3:
-            self.grammar.initialNonTerminal = self.drawLine()
+            self.grammar.initialNonTerminal = self.popLine()
         elif self.line == 4:
             self.productions = []
+            self.isValid = True
         if self.line >= 5:
-            production = self.drawLine().split('>')
+            production = self.popLine().split('>')
             destinationInput = production[1].split(' ')
             production[1] = [s for s in destinationInput if s]
             production[0] = production[0].replace(' ','')
+            if not production[0] in self.grammar.nonTerminals:
+                self.isValid = False
             if len(production[1]) == 1:
                 if production[1][0] in self.grammar.nonTerminals:
                     self.productions.append(Production(production[0],destiny=production[1][0]))
                 elif production[1][0] in self.grammar.terminals:
                     self.productions.append(Production(production[0],input1=production[1][0]))
+                else: self.isValid = False
             elif len(production[1]) == 2:
-                self.productions.append(Production(production[0],production[1][0],production[1][1]))
+                if production[1][0] in self.grammar.terminals and production[1][1] in self.grammar.nonTerminals:
+                    self.productions.append(Production(production[0],production[1][0],production[1][1]))
+                else: self.isValid = False
             elif len(production[1]) == 3:
-                self.productions.append(Production(production[0],production[1][0],production[1][1],production[1][2]))
+                if production[1][0] in self.grammar.terminals and production[1][1] in self.grammar.nonTerminals and production[1][2] in self.grammar.terminals:
+                    self.productions.append(Production(production[0],production[1][0],production[1][1],production[1][2]))
+                else: self.isValid = False
 
         self.line += 1
         if self.viewLine() == '%':
-            self.grammar.productions = self.productions
-            self.grammars.append(self.grammar)
-            self.drawLine()
+            if self.isValid:
+                self.grammar.productions = self.productions
+                self.grammars.append(self.grammar)
+            self.popLine()
             self.line = 0
         if self.viewLine():
             self.identifyElements()
