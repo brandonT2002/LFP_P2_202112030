@@ -31,6 +31,7 @@ class ControllerGLC:
         elif self.line == 4:
             self.productions = []
             self.isValid = True
+            self.isGLC = False
         if self.line >= 5:
             production = self.popLine().split('>')
             destinationInput = production[1].split(' ')
@@ -51,11 +52,12 @@ class ControllerGLC:
             elif len(production[1]) == 3:
                 if production[1][0] in self.grammar.terminals and production[1][1] in self.grammar.nonTerminals and production[1][2] in self.grammar.terminals:
                     self.productions.append(Production(production[0],production[1][0],production[1][1],production[1][2]))
+                    self.isGLC = True
                 else: self.isValid = False
 
         self.line += 1
         if self.viewLine() == '%':
-            if self.isValid:
+            if self.isValid and self.isGLC:
                 self.grammar.productions = self.productions
                 self.grammars.append(self.grammar)
             self.popLine()
