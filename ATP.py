@@ -3,8 +3,10 @@ class ATP:
         self.name = None
         self.alphabet = None
         self.stackSymbols = None
+        self.states = None
         self.initialState = None
-        self.acceptanceState = None
+        self.acceptingStates = None
+        self.transitions = None
 
 class Transition:
     def __init__(self,origin,entrance,stackOutput,destiny,stackInput):

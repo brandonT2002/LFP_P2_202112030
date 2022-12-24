@@ -1,8 +1,11 @@
 from GLC import *
+from ATP import *
+from Graph import branchTree
 
-class ControllerGLC:
+class Controller:
     def __init__(self) -> None:
         self.grammars = []
+        self.stackAutomata = []
         self.line = 0
 
     # Lectura del archivo y creación de objetos
@@ -18,7 +21,7 @@ class ControllerGLC:
         except:
             return None
 
-    def identifyElements(self):
+    def identifyElementsGLC(self):
         if self.line == 0:
             self.grammar = GLC()
             self.grammar.name = self.popLine()
@@ -32,7 +35,7 @@ class ControllerGLC:
             self.productions = []
             self.isValid = True
             self.isGLC = False
-        if self.line >= 5:
+        if self.line >= 4:
             production = self.popLine().split('>')
             destinationInput = production[1].split(' ')
             production[1] = [s for s in destinationInput if s]
@@ -63,13 +66,13 @@ class ControllerGLC:
             self.popLine()
             self.line = 0
         if self.viewLine():
-            self.identifyElements()
+            self.identifyElementsGLC()
 
     def grammarRecognition(self):
         self.inputFile = self.inputFile.split('\n')
-        self.identifyElements()
+        self.identifyElementsGLC()
 
-    def readFile(self):
+    def readFileGLC(self):
         ruta = 'Gramatica.glc'
         self.inputFile = open(ruta,encoding='utf-8').read()
 
@@ -82,10 +85,73 @@ class ControllerGLC:
             print('No terminal inicial',grammar.initialNonTerminal)
             print('Producciones')
             for production in grammar.productions:
-                print(production.__dict__)
+                print('-',production.__dict__)
             print()
 
-ctrl = ControllerGLC()
-ctrl.readFile()
+    # ---------------------------------------------
+    # módulo autómata de pila
+    def identifyElementsAPL(self):
+        if self.line == 0:
+            self.automaton = ATP()
+            self.automaton.name = self.popLine()
+        elif self.line == 1:
+            self.automaton.alphabet = self.popLine().split(',')
+        elif self.line == 2:
+            self.automaton.stackSymbols = self.popLine().split(',')
+        elif self.line == 3:
+            self.automaton.states = self.popLine().split(',')
+        elif self.line == 4:
+            self.automaton.initialState = self.popLine()
+        elif self.line == 5:
+            self.automaton.acceptingStates = self.popLine().split(',')
+        elif self.line == 6:
+            self.transitions = []
+        if self.line >= 6:
+            transition = self.popLine().split(';')
+            transition[0] = transition[0].split(',')
+            transition[1] = transition[1].split(',')
+            self.transitions.append(Transition(transition[0][0],transition[0][1],transition[0][2],transition[1][0],transition[1][1]))
+
+        self.line += 1
+        if self.viewLine() == '%':
+            self.automaton.transitions = self.transitions
+            self.stackAutomata.append(self.automaton)
+            self.popLine()
+            self.line = 0
+        if self.viewLine():
+            self.identifyElementsAPL()
+
+    def showAutomaton(self):
+        for automaton in self.stackAutomata:
+            print('Nombre: ',automaton.name)
+            print('Alfabeto: ',automaton.alphabet)
+            print('Simbolos de pila: ',automaton.stackSymbols)
+            print('Estados: ',automaton.states)
+            print('Estado inicial: ',automaton.initialState)
+            print('Estado de aceptación: ',automaton.acceptingStates)
+            print('Transiciones: ')
+            for transition in automaton.transitions:
+                print('-',transition.__dict__)
+            print()
+
+    def automatonRecognition(self):
+        self.inputFile = self.inputFile.split('\n')
+        self.identifyElementsAPL()
+
+    def readFileAPL(self):
+        ruta = 'Automata.apl'
+        self.inputFile = open(ruta,encoding='utf-8').read()
+
+ctrl = Controller()
+ctrl.readFileGLC()
 ctrl.grammarRecognition()
+print('---GRAMATICAS LIBRES DE CONTEXTO---')
 ctrl.showGrammar()
+
+ctrl.readFileAPL()
+ctrl.automatonRecognition()
+print('---AUTOMATAS DE PILA---')
+ctrl.showAutomaton()
+
+#gr = branchTree()
+#print(gr.generateDOT(ctrl.grammars[0]))
