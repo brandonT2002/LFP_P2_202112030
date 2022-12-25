@@ -1,6 +1,6 @@
-from GLC import *
-from ATP import *
-from Graph import dotReports
+from Backend.GLC import *
+from Backend.ATP import *
+from Backend.Graph import dotReports
 
 class Controller:
     def __init__(self) -> None:
@@ -72,9 +72,9 @@ class Controller:
         self.inputFile = self.inputFile.split('\n')
         self.identifyElementsGLC()
 
-    def readFileGLC(self):
-        ruta = '../Gramatica.glc'
-        self.inputFile = open(ruta,encoding='utf-8').read()
+    def readFileGLC(self,route):
+        #ruta = '../Gramatica.glc'
+        self.inputFile = open(route,encoding='utf-8').read()
 
     # mostrar objetos
     def showGrammar(self):
@@ -138,21 +138,6 @@ class Controller:
         self.inputFile = self.inputFile.split('\n')
         self.identifyElementsAPL()
 
-    def readFileAPL(self):
-        ruta = '../Automata.apl'
-        self.inputFile = open(ruta,encoding='utf-8').read()
-
-ctrl = Controller()
-ctrl.readFileGLC()
-ctrl.grammarRecognition()
-print('---GRAMATICAS LIBRES DE CONTEXTO---')
-#ctrl.showGrammar()
-
-ctrl.readFileAPL()
-ctrl.automatonRecognition()
-print('---AUTOMATAS DE PILA---')
-#ctrl.showAutomaton()
-
-#print(ctrl.stackAutomata[0])
-gr = dotReports()
-gr.generateSAReport(ctrl.stackAutomata[0])
+    def readFileAPL(self,route):
+        #ruta = '../Automata.apl'
+        self.inputFile = open(route,encoding='utf-8').read()

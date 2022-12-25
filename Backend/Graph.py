@@ -1,4 +1,4 @@
-from ATP import ATP
+from Backend.ATP import ATP
 import os
 import webbrowser
 
@@ -34,8 +34,8 @@ class dotReports:
         dot += items
         dot += '\n}'
 
-        with open('../Reports/ReportSA.txt','w',encoding='utf-8') as report:
+        with open('Reports/ReportSA.txt','w',encoding='utf-8') as report:
             report.write(dot)
 
-        os.system('dot -Tpdf ../Reports/ReportSA.txt -o ../Reports/ReportSA.pdf')
-        webbrowser.open('..\Reports\ReportSA.pdf')
+        os.system('dot -Tpdf Reports/ReportSA.txt -o Reports/ReportSA.pdf')
+        webbrowser.open('Reports\ReportSA.pdf')
