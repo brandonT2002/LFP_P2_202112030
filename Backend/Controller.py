@@ -73,7 +73,7 @@ class Controller:
         self.identifyElementsGLC()
 
     def readFileGLC(self):
-        ruta = 'Gramatica.glc'
+        ruta = '../Gramatica.glc'
         self.inputFile = open(ruta,encoding='utf-8').read()
 
     # mostrar objetos
@@ -139,7 +139,7 @@ class Controller:
         self.identifyElementsAPL()
 
     def readFileAPL(self):
-        ruta = 'Automata.apl'
+        ruta = '../Automata.apl'
         self.inputFile = open(ruta,encoding='utf-8').read()
 
 ctrl = Controller()
