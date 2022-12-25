@@ -1,6 +1,6 @@
 from GLC import *
 from ATP import *
-from Graph import branchTree
+from Graph import dotReports
 
 class Controller:
     def __init__(self) -> None:
@@ -146,12 +146,13 @@ ctrl = Controller()
 ctrl.readFileGLC()
 ctrl.grammarRecognition()
 print('---GRAMATICAS LIBRES DE CONTEXTO---')
-ctrl.showGrammar()
+#ctrl.showGrammar()
 
 ctrl.readFileAPL()
 ctrl.automatonRecognition()
 print('---AUTOMATAS DE PILA---')
-ctrl.showAutomaton()
+#ctrl.showAutomaton()
 
-#gr = branchTree()
-#print(gr.generateDOT(ctrl.grammars[0]))
+#print(ctrl.stackAutomata[0])
+gr = dotReports()
+gr.generateSAReport(ctrl.stackAutomata[0])

@@ -1,0 +1,24 @@
+digraph G {
+graph [labelloc=t];
+node [shape=circle];
+fontsize=30;
+label = "AP1";NodeLabel [shape=none fontsize=18 label = 
+<
+Alfabeto: a, b<br align="left"/>
+Alfabeto de pila: a, b, #<br align="left"/>
+Estados: I, A, B, C, F<br align="left"/>
+Estado inicial: I<br align="left"/>
+Estados de aceptación: F<br align="left"/>
+>
+];
+rankdir=LR;
+I;A;B;C;F;
+F [peripheries=2];
+NodeLabel -> I [color=none];
+I -> A [label="$,$;#"];
+A -> B [label="a,$;a"];
+B -> B [label="a,$;a"];
+B -> C [label="b,a;$"];
+C -> C [label="b,a;$"];
+C -> F [label="$,#;$"];
+}
