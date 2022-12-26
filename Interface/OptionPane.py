@@ -7,9 +7,9 @@ class OptionPane(tk.Frame):
         self.configure(bg='#2A2D2E')
         self.grid(row=0,column=0,sticky='nswe')
 
-        self.options()
+        self.components()
 
-    def options(self):
+    def components(self):
         self.grid_rowconfigure(0,minsize=10)
         self.grid_rowconfigure(7,weight=1)
         self.grid_rowconfigure(8,minsize=20)
