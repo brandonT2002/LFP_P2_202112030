@@ -114,8 +114,8 @@ class Controller:
             self.transitions.append(Transition(transition[0][0],transition[0][1],transition[0][2],transition[1][0],transition[1][1]))
             try:
                 dictionary = {}
-                dictionary['destiny'] = transition[0][2]
-                dictionary['pop'] = transition[1][0]
+                dictionary['destiny'] = transition[1][0]
+                dictionary['pop'] = transition[0][2]
                 dictionary['add'] = transition[1][1]
                 self.automaton.path[transition[0][0]][transition[0][1]] = dictionary
             except: pass
