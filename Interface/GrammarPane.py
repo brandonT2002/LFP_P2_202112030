@@ -20,7 +20,7 @@ class GrammarPane(tk.Frame):
         title1 = Label(master=self,text='Gramática Libre de Contexto',font=('Roboto Medium',20),background='#2A2D2E',foreground='white')
         title1.grid(row=0,column=0,columnspan=4,pady=(20,0),padx=20,sticky='nw')
 
-        style= ttk.Style()
+        style = ttk.Style()
         style.theme_use('clam')
         style.configure("TCombobox", fieldbackground= "#343638", background= "#fff", selectforeground='white',activebackground='#343638',activeforeground='black',foreground='white')
 
@@ -38,7 +38,6 @@ class GrammarPane(tk.Frame):
         image = image.resize((700,450),Image.ANTIALIAS)
         image = ImageTk.PhotoImage(image)
 
-        canva = Canvas(self)
         label = Label(self,image=image,background='#2A2D2E')
         label.img = image
         label.grid(row=2,column=0,rowspan=3,columnspan=4,pady=20,padx=20,sticky='nswe')
