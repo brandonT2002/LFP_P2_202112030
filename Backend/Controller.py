@@ -1,6 +1,5 @@
 from Backend.GLC import *
 from Backend.ATP import *
-from Backend.Graph import dotReports
 
 class Controller:
     def __init__(self) -> None:
@@ -100,6 +99,8 @@ class Controller:
             self.automaton.stackSymbols = self.popLine().split(',')
         elif self.line == 3:
             self.automaton.states = self.popLine().split(',')
+            for state in self.automaton.states:
+                self.automaton.path[state] = {}
         elif self.line == 4:
             self.automaton.initialState = self.popLine()
         elif self.line == 5:
@@ -111,6 +112,13 @@ class Controller:
             transition[0] = transition[0].split(',')
             transition[1] = transition[1].split(',')
             self.transitions.append(Transition(transition[0][0],transition[0][1],transition[0][2],transition[1][0],transition[1][1]))
+            try:
+                dictionary = {}
+                dictionary['destiny'] = transition[0][2]
+                dictionary['pop'] = transition[1][0]
+                dictionary['add'] = transition[1][1]
+                self.automaton.path[transition[0][0]][transition[0][1]] = dictionary
+            except: pass
 
         self.line += 1
         if self.viewLine() == '%':
@@ -129,6 +137,7 @@ class Controller:
             print('Estados: ',automaton.states)
             print('Estado inicial: ',automaton.initialState)
             print('Estado de aceptación: ',automaton.acceptingStates)
+            print(automaton.path)
             print('Transiciones: ')
             for transition in automaton.transitions:
                 print('-',transition.__dict__)
