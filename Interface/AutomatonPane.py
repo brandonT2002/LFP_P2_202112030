@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import *
 from tkinter import ttk
-
+from PIL import Image,ImageTk
 class AutomatonPane(tk.Frame):
     def __init__(self,root):
         super().__init__(master=root)
@@ -30,30 +30,64 @@ class AutomatonPane(tk.Frame):
         self.information = Button(master=self,text='Información General',font=('Roboto Medium',11),bg='#0059b3',activebackground='#0059b3',foreground='white',activeforeground='white',width=15,height=1,cursor='hand2')
         self.information.grid(row=1,column=2,columnspan=2,pady=0,padx=(10,20),sticky='nwe')
 
-        self.validateString = Button(master=self,text='Validar Cadena',font=('Roboto Medium',11),bg='gray40',activebackground='gray40',foreground='white',activeforeground='white',width=15,height=1,cursor='hand2')
-        self.validateString.grid(row=2,column=0,pady=0,padx=(20,10),sticky='nwe')
+        self.string1 = Entry(master=self,bg='#343638',foreground='white',font=('Roboto Medium',16))
+        self.string1.configure(disabledbackground='#343638',disabledforeground='white')
+        self.string1.grid(row=2,column=0,pady=(10,10),padx=20,columnspan=4,sticky='nwe')
 
-        self.validationPath = Button(master=self,text='Ruta de Validación',font=('Roboto Medium',11),bg='gray40',activebackground='gray40',foreground='white',activeforeground='white',width=15,height=1,cursor='hand2')
-        self.validationPath.grid(row=2,column=1,pady=0,padx=(10,10),sticky='nwe')
+        self.validateString = Button(master=self,text='Validar Cadena',font=('Roboto Medium',11),bg='#0059b3',activebackground='#0059b3',foreground='white',activeforeground='white',width=15,height=1,cursor='hand2')
+        self.validateString.grid(row=3,column=0,pady=(10,10),padx=(20,10),sticky='nwe')
 
-        self.stepByStep = Button(master=self,text='Paso a Paso',font=('Roboto Medium',11),bg='gray40',activebackground='gray40',foreground='white',activeforeground='white',width=15,height=1,cursor='hand2')
-        self.stepByStep.grid(row=2,column=2,pady=0,padx=(10,10),sticky='nwe')
+        self.validationPath = Button(master=self,text='Ruta de Validación',font=('Roboto Medium',11),bg='#0059b3',activebackground='#0059b3',foreground='white',activeforeground='white',width=15,height=1,cursor='hand2',command=self.option1)
+        self.validationPath.grid(row=3,column=1,pady=(10,10),padx=(10,10),sticky='nwe')
 
-        self.onePass = Button(master=self,text='Una Pasada',font=('Roboto Medium',11),bg='gray40',activebackground='gray40',foreground='white',activeforeground='white',width=15,height=1,cursor='hand2')
-        self.onePass.grid(row=2,column=3,pady=0,padx=(10,20),sticky='nwe')
+        self.stepByStep = Button(master=self,text='Paso a Paso',font=('Roboto Medium',11),bg='#0059b3',activebackground='#0059b3',foreground='white',activeforeground='white',width=15,height=1,cursor='hand2',command=self.option2)
+        self.stepByStep.grid(row=3,column=2,pady=(10,10),padx=(10,10),sticky='nwe')
 
-        self.validateStringPane()
+        self.onePass = Button(master=self,text='Una Pasada',font=('Roboto Medium',11),bg='#0059b3',activebackground='#0059b3',foreground='white',activeforeground='white',width=15,height=1,cursor='hand2')
+        self.onePass.grid(row=3,column=3,pady=(10,10),padx=(10,20),sticky='nwe')
 
-    def validateStringPane(self):
-        self.stringPane = Frame(master=self)
-        self.stringPane.grid(row=3,column=0,columnspan=4,rowspan=5,padx=20,pady=(0,20),sticky="nswe")
-        self.stringPane.configure(bg='#2A2D2E')
-        self.stringPane.rowconfigure(0, weight=1)
-        self.stringPane.columnconfigure(0, weight=1)
+        self.pathPane()
+        self.stepPane()
+        self.Panel1.grid_remove()
+        self.Panel2.grid_remove()
 
-        self.string = Entry(master=self.stringPane,width=120,bg='#343638',foreground='white',font=('Roboto Medium',16))
-        self.string.configure(disabledbackground='#343638',disabledforeground='white')
-        self.string.grid(row=0,column=0,padx=(0,20),sticky='nw')
+    def pathPane(self):
+        self.Panel1 = Frame(master=self)
+        self.Panel1.grid(row=4,column=0,columnspan=4,rowspan=5,padx=20,pady=(0,20),sticky="nswe")
+        self.Panel1.configure(bg='#2A2D2E')
+        self.Panel1.rowconfigure(0,weight=1)
+        self.Panel1.columnconfigure((0,1,2,3),weight=1)
+        self.Panel1.columnconfigure(4,weight=0)
 
-        self.validateS = Button(master=self.stringPane,text='Validar',font=('Roboto Medium',11),bg='#0059b3',activebackground='#0059b3',foreground='white',activeforeground='white',width=15,height=1,cursor='hand2')
-        self.validateS.grid(row=0,column=1,sticky='nwe')
+        self.route = Label(master=self.Panel1,text='Ruta: ',font=('Roboto Medium',20),background='#2A2D2E',foreground='white')
+        self.route.grid(row=0,column=0,pady=(20,0),padx=20,sticky='nw')
+
+    def stepPane(self):
+        self.Panel2 = Frame(master=self)
+        self.Panel2.grid(row=4,column=0,columnspan=4,rowspan=5,padx=20,pady=(0,20),sticky="nswe")
+        self.Panel2.configure(bg='#2A2D2E')
+        self.Panel2.rowconfigure(0,weight=1)
+        self.Panel2.columnconfigure((0,1,2,3),weight=1)
+        self.Panel2.columnconfigure(4,weight=0)
+
+        self.previous = Button(master=self.Panel2,text='Anterior ←',font=('Roboto Medium',11),bg='#107C41',activebackground='#107C41',foreground='white',activeforeground='white',width=15,height=1,cursor='hand2')
+        self.previous.grid(row=0,column=1,columnspan=1,padx=(20,10),sticky='new')
+
+        self.next = Button(master=self.Panel2,text='Siguiente →',font=('Roboto Medium',11),bg='#107C41',activebackground='#107C41',foreground='white',activeforeground='white',width=15,height=1,cursor='hand2')
+        self.next.grid(row=0,column=2,columnspan=1,padx=(10,20),sticky='new')
+
+        image = Image.open('Image/gr.png')
+        image = image.resize((600,375),Image.ANTIALIAS)
+        image = ImageTk.PhotoImage(image)
+
+        label = Label(self.Panel2,image=image,background='#2A2D2E')
+        label.img = image
+        label.grid(row=1,column=0,rowspan=3,columnspan=4,pady=(0,20),sticky='nswe')
+
+    def option1(self):
+        self.Panel2.grid_remove()
+        self.Panel1.grid()
+
+    def option2(self):
+        self.Panel1.grid_remove()
+        self.Panel2.grid()
