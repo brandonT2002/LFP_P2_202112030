@@ -1,3 +1,4 @@
+from Interface.MainWindow import MainWindow
 from Backend.Controller import Controller
 from Backend.Graph import dotReports
 ctrl = Controller()
@@ -14,3 +15,5 @@ print('---AUTOMATAS DE PILA---')
 #print(ctrl.stackAutomata[0])
 gr = dotReports()
 gr.generateSAReport(ctrl.stackAutomata[0])
+
+window = MainWindow()
