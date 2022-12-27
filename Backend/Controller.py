@@ -1,6 +1,5 @@
-from GLC import *
-from ATP import *
-from Graph import dotReports
+from Backend.GLC import *
+from Backend.ATP import *
 
 class Controller:
     def __init__(self) -> None:
@@ -72,9 +71,9 @@ class Controller:
         self.inputFile = self.inputFile.split('\n')
         self.identifyElementsGLC()
 
-    def readFileGLC(self):
-        ruta = 'Gramatica.glc'
-        self.inputFile = open(ruta,encoding='utf-8').read()
+    def readFileGLC(self,route):
+        #ruta = '../Gramatica.glc'
+        self.inputFile = open(route,encoding='utf-8').read()
 
     # mostrar objetos
     def showGrammar(self):
@@ -100,6 +99,8 @@ class Controller:
             self.automaton.stackSymbols = self.popLine().split(',')
         elif self.line == 3:
             self.automaton.states = self.popLine().split(',')
+            for state in self.automaton.states:
+                self.automaton.path[state] = {}
         elif self.line == 4:
             self.automaton.initialState = self.popLine()
         elif self.line == 5:
@@ -111,6 +112,13 @@ class Controller:
             transition[0] = transition[0].split(',')
             transition[1] = transition[1].split(',')
             self.transitions.append(Transition(transition[0][0],transition[0][1],transition[0][2],transition[1][0],transition[1][1]))
+            try:
+                dictionary = {}
+                dictionary['destiny'] = transition[1][0]
+                dictionary['pop'] = transition[0][2]
+                dictionary['add'] = transition[1][1]
+                self.automaton.path[transition[0][0]][transition[0][1]] = dictionary
+            except: pass
 
         self.line += 1
         if self.viewLine() == '%':
@@ -129,6 +137,7 @@ class Controller:
             print('Estados: ',automaton.states)
             print('Estado inicial: ',automaton.initialState)
             print('Estado de aceptación: ',automaton.acceptingStates)
+            print(automaton.path)
             print('Transiciones: ')
             for transition in automaton.transitions:
                 print('-',transition.__dict__)
@@ -138,21 +147,6 @@ class Controller:
         self.inputFile = self.inputFile.split('\n')
         self.identifyElementsAPL()
 
-    def readFileAPL(self):
-        ruta = 'Automata.apl'
-        self.inputFile = open(ruta,encoding='utf-8').read()
-
-ctrl = Controller()
-ctrl.readFileGLC()
-ctrl.grammarRecognition()
-print('---GRAMATICAS LIBRES DE CONTEXTO---')
-#ctrl.showGrammar()
-
-ctrl.readFileAPL()
-ctrl.automatonRecognition()
-print('---AUTOMATAS DE PILA---')
-#ctrl.showAutomaton()
-
-#print(ctrl.stackAutomata[0])
-gr = dotReports()
-gr.generateSAReport(ctrl.stackAutomata[0])
+    def readFileAPL(self,route):
+        #ruta = '../Automata.apl'
+        self.inputFile = open(route,encoding='utf-8').read()

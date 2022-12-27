@@ -7,6 +7,7 @@ class ATP:
         self.initialState = None
         self.acceptingStates = None
         self.transitions = None
+        self.path = {}
 
 class Transition:
     def __init__(self,origin,entrance,stackOutput,destiny,stackInput):
