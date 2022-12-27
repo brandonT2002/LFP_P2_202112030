@@ -23,7 +23,7 @@ class AutomatonPane(tk.Frame):
         style.theme_use('clam')
         style.configure('TCombobox',fieldbackground= "#343638", background= "#fff", selectforeground='white',activebackground='#343638',activeforeground='black',foreground='white')
 
-        self.cbAutomaton = ttk.Combobox(master=self,values=['value1','value2','value3'],font=('Roboto Medium',16))
+        self.cbAutomaton = ttk.Combobox(master=self,font=('Roboto Medium',16))
         self.cbAutomaton.grid(row=1,column=0,columnspan=2,pady=0,padx=(20,10),sticky='nwe')
         self.cbAutomaton.set('Seleccione un Autómata')
 

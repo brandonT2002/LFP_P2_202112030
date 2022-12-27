@@ -50,13 +50,17 @@ class OptionPane(tk.Frame):
                 if extension[1] == 'glc':
                     self.ctrl.readFileGLC(archivo)
                     self.ctrl.grammarRecognition()
-                    print('--Gramaticas--')
-                    self.ctrl.showGrammar()
+                    self.nameGrammar = []
+                    for i in range(len(self.ctrl.grammars)):
+                        self.nameGrammar.append(f'{i + 1} - {self.ctrl.grammars[i].name}')
+                    self.grammar.cbGrammar.configure(values=self.nameGrammar)
                 elif extension[1] == 'ap':
                     self.ctrl.readFileAPL(archivo)
                     self.ctrl.automatonRecognition()
-                    print('--Automatas--')
-                    self.ctrl.showAutomaton()
+                    self.nameAutomata = []
+                    for i in range(len(self.ctrl.stackAutomata)):
+                        self.nameAutomata.append(f'{i + 1} - {self.ctrl.stackAutomata[i].name}')
+                    self.automaton.cbAutomaton.configure(values=self.nameAutomata)
         except: pass
 
     def option1(self):
