@@ -39,7 +39,7 @@ class OptionPane(tk.Frame):
         try:
             formatos = (
                 ("form files","*.glc"),
-                ("form files","*.apl"),
+                ("form files","*.ap"),
             )
             archivo = askopenfilename(
                 title='Abrir Archivo',
@@ -52,7 +52,7 @@ class OptionPane(tk.Frame):
                     self.ctrl.grammarRecognition()
                     print('--Gramaticas--')
                     self.ctrl.showGrammar()
-                elif extension[1] == 'apl':
+                elif extension[1] == 'ap':
                     self.ctrl.readFileAPL(archivo)
                     self.ctrl.automatonRecognition()
                     print('--Automatas--')
