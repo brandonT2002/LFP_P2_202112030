@@ -30,7 +30,7 @@ class AutomatonPane(tk.Frame):
         self.cbAutomaton.grid(row=1,column=0,columnspan=2,pady=0,padx=(20,10),sticky='nwe')
         self.cbAutomaton.set('Seleccione un Autómata')
 
-        self.information = Button(master=self,text='Información General',font=('Roboto Medium',11),bg='#0059b3',activebackground='#0059b3',foreground='white',activeforeground='white',width=15,height=1,cursor='hand2')
+        self.information = Button(master=self,text='Información General',font=('Roboto Medium',11),bg='#0059b3',activebackground='#0059b3',foreground='white',activeforeground='white',width=15,height=1,cursor='hand2',command=self.generatePDF)
         self.information.grid(row=1,column=2,columnspan=2,pady=0,padx=(10,20),sticky='nwe')
 
         self.alphabet = Label(master=self,text='Alfabeto: ',font=('Roboto Medium',20),background='#2A2D2E',foreground='white')
@@ -89,6 +89,13 @@ class AutomatonPane(tk.Frame):
         label = Label(self.Panel2,image=image,background='#2A2D2E')
         label.img = image
         label.grid(row=1,column=0,rowspan=3,columnspan=4,pady=(0,20),sticky='nswe')
+
+    def generatePDF(self):
+        if self.cbAutomaton.get() == 'Seleccione un Autómata':
+            messagebox.showinfo('Información','No se ha seleccionado un autómata')
+        else:
+            index = int(self.cbAutomaton.get().split(' - ')[0]) - 1
+            self.ctrl.generatedReport(index)
 
     def getString(self):
         if self.string1.get().replace(' ','') == '':

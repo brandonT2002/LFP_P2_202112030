@@ -1,6 +1,7 @@
 from Backend.GLC import *
 from Backend.ATP import *
 from Backend.Stack import Stack
+from Backend.Graph import dotReports
 
 class Controller:
     def __init__(self) -> None:
@@ -142,6 +143,9 @@ class Controller:
             self.line = 0
         if self.viewLine():
             self.identifyElementsAPL()
+
+    def generatedReport(self,index):
+        dotReports().generateSAReport(self.stackAutomata[index])
 
     def getKeys(self,transitions):
         keys = []
