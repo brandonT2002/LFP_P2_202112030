@@ -194,7 +194,7 @@ class Controller:
 
         isValid = self.evaluateCharacters(path,initial,accepting,string,Stack(),'',[],[])
         if isValid:
-            dotReports().generateTable(isValid[2])
+            dotReports().generateTable(isValid[2],self.stackAutomata[index].name)
         else:
             return 'Verifique la Cadena'
 

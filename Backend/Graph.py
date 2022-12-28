@@ -43,8 +43,8 @@ class dotReports:
         os.system('dot -Tpdf Reports/ReportSA.txt -o Reports/ReportSA.pdf')
         webbrowser.open('Reports\ReportSA.pdf')
 
-    def generateTable(self,table : list):
-        dot = 'digraph structs {\nnode [shape=record];\nstruct [label="'
+    def generateTable(self,table : list,name):
+        dot = 'digraph structs {\ntitulo [shape=none label = "' + name + '" fontsize=30];\nnode [shape=record];\nstruct [label="'
         dot += '\n{<f0> Iteración|'
         items = ''
         for i in range(len(table)):
@@ -85,7 +85,7 @@ class dotReports:
         dot += items
         dot += '}'
 
-        dot += '"\n];\n}'
+        dot += '"\n];\ntitulo -> struct [color=none];\n}'
 
         with open('Reports/ReportPass.txt','w',encoding='utf-8') as report:
             report.write(dot)
