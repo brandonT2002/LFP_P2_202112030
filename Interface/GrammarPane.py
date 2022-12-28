@@ -2,13 +2,14 @@ import tkinter as tk
 from tkinter import *
 from tkinter import ttk
 from PIL import Image,ImageTk
+from Backend.Controller import Controller
 
 class GrammarPane(tk.Frame):
     def __init__(self,root):
         super().__init__(master=root)
         self.configure(bg='#2A2D2E')
         self.grid(row=0,column=1,pady=20,padx=20,sticky='nswe')
-
+        self.ctrl : Controller = None
         self.components()
 
     def components(self):

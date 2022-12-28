@@ -2,9 +2,11 @@ import tkinter as tk
 from tkinter import *
 from tkinter.filedialog import askopenfilename
 from Backend.Controller import Controller
+from Interface.AutomatonPane import AutomatonPane
+from Interface.GrammarPane import GrammarPane
 
 class OptionPane(tk.Frame):
-    def __init__(self,root,grammar,automaton):
+    def __init__(self,root,grammar : GrammarPane,automaton : AutomatonPane):
         super().__init__(master=root,width=200)
         self.configure(bg='#2A2D2E')
         self.grid(row=0,column=0,sticky='nswe')
@@ -50,6 +52,7 @@ class OptionPane(tk.Frame):
                 if extension[1] == 'glc':
                     self.ctrl.readFileGLC(archivo)
                     self.ctrl.grammarRecognition()
+                    #self.ctrl.showGrammar()
                     self.nameGrammar = []
                     for i in range(len(self.ctrl.grammars)):
                         self.nameGrammar.append(f'{i + 1} - {self.ctrl.grammars[i].name}')
@@ -57,10 +60,14 @@ class OptionPane(tk.Frame):
                 elif extension[1] == 'ap':
                     self.ctrl.readFileAPL(archivo)
                     self.ctrl.automatonRecognition()
+                    self.ctrl.showAutomaton()
+                    #self.ctrl.stackAutomata
                     self.nameAutomata = []
                     for i in range(len(self.ctrl.stackAutomata)):
                         self.nameAutomata.append(f'{i + 1} - {self.ctrl.stackAutomata[i].name}')
                     self.automaton.cbAutomaton.configure(values=self.nameAutomata)
+                self.automaton.ctrl = self.ctrl
+                self.grammar.ctrl = self.ctrl
         except: pass
 
     def option1(self):

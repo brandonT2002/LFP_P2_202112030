@@ -5,6 +5,7 @@ class GLC:
         self.terminals = None
         self.initialNonTerminal = None
         self.productions = None
+        self.path = {}
 
 class Production:
     def __init__(self,origin,input1 = '',destiny = '',input2 = ''):

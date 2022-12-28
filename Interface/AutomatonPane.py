@@ -1,13 +1,15 @@
 import tkinter as tk
 from tkinter import *
 from tkinter import ttk
+from tkinter import messagebox
 from PIL import Image,ImageTk
+from Backend.Controller import Controller
 class AutomatonPane(tk.Frame):
     def __init__(self,root):
         super().__init__(master=root)
         self.configure(bg='#2A2D2E')
         self.grid(row=0,column=1,pady=20,padx=20,sticky='nswe')
-
+        self.ctrl : Controller = None
         self.components()
 
     def components(self):
@@ -24,17 +26,21 @@ class AutomatonPane(tk.Frame):
         style.configure('TCombobox',fieldbackground= "#343638", background= "#fff", selectforeground='white',activebackground='#343638',activeforeground='black',foreground='white')
 
         self.cbAutomaton = ttk.Combobox(master=self,font=('Roboto Medium',16))
+        self.cbAutomaton.bind('<<ComboboxSelected>>',self.viewAutomaton)
         self.cbAutomaton.grid(row=1,column=0,columnspan=2,pady=0,padx=(20,10),sticky='nwe')
         self.cbAutomaton.set('Seleccione un Autómata')
 
         self.information = Button(master=self,text='Información General',font=('Roboto Medium',11),bg='#0059b3',activebackground='#0059b3',foreground='white',activeforeground='white',width=15,height=1,cursor='hand2')
         self.information.grid(row=1,column=2,columnspan=2,pady=0,padx=(10,20),sticky='nwe')
 
+        self.alphabet = Label(master=self,text='Alfabeto: ',font=('Roboto Medium',20),background='#2A2D2E',foreground='white')
+        self.alphabet.grid(row=2,column=2,columnspan=2,pady=(10,10),padx=20,sticky='nw')
+
         self.string1 = Entry(master=self,bg='#343638',foreground='white',font=('Roboto Medium',16))
         self.string1.configure(disabledbackground='#343638',disabledforeground='white')
-        self.string1.grid(row=2,column=0,pady=(10,10),padx=20,columnspan=4,sticky='nwe')
+        self.string1.grid(row=2,column=0,pady=(10,10),padx=20,columnspan=2,sticky='nwe')
 
-        self.validateString = Button(master=self,text='Validar Cadena',font=('Roboto Medium',11),bg='#0059b3',activebackground='#0059b3',foreground='white',activeforeground='white',width=15,height=1,cursor='hand2')
+        self.validateString = Button(master=self,text='Validar Cadena',font=('Roboto Medium',11),bg='#0059b3',activebackground='#0059b3',foreground='white',activeforeground='white',width=15,height=1,cursor='hand2',command=self.getString)
         self.validateString.grid(row=3,column=0,pady=(10,10),padx=(20,10),sticky='nwe')
 
         self.validationPath = Button(master=self,text='Ruta de Validación',font=('Roboto Medium',11),bg='#0059b3',activebackground='#0059b3',foreground='white',activeforeground='white',width=15,height=1,cursor='hand2',command=self.option1)
@@ -83,6 +89,19 @@ class AutomatonPane(tk.Frame):
         label = Label(self.Panel2,image=image,background='#2A2D2E')
         label.img = image
         label.grid(row=1,column=0,rowspan=3,columnspan=4,pady=(0,20),sticky='nswe')
+
+    def getString(self):
+        if self.string1.get().replace(' ','') == '':
+            messagebox.showinfo('Información','Ingrese una cadena para validar')
+        elif self.cbAutomaton.get() == 'Seleccione un Autómata':
+            messagebox.showinfo('Información','No se ha seleccionado un autómata')
+        else:
+            index = int(self.cbAutomaton.get().split(' - ')[0]) - 1
+            messagebox.showinfo('Información',self.ctrl.validateString(index,self.string1.get()))
+
+    def viewAutomaton(self,event):
+        index = int(self.cbAutomaton.get().split(' - ')[0]) - 1
+        self.alphabet.configure(text=f'Alfabeto: {self.ctrl.getAlphabet(index)}')
 
     def option1(self):
         self.Panel2.grid_remove()
