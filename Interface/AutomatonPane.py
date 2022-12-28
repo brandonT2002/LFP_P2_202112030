@@ -66,7 +66,7 @@ class AutomatonPane(tk.Frame):
         self.Panel1.columnconfigure(4,weight=0)
 
         self.route = Label(master=self.Panel1,text='Ruta: ',font=('Roboto Medium',20),background='#2A2D2E',foreground='white')
-        self.route.grid(row=0,column=0,pady=(20,0),padx=20,sticky='nw')
+        self.route.grid(row=0,column=0,columnspan=4,pady=(20,0),padx=20,sticky='nwe')
 
     def stepPane(self):
         self.Panel2 = Frame(master=self)
@@ -106,6 +106,19 @@ class AutomatonPane(tk.Frame):
             index = int(self.cbAutomaton.get().split(' - ')[0]) - 1
             messagebox.showinfo('Información',self.ctrl.validateString(index,self.string1.get()))
 
+    def getRoute(self):
+        if self.string1.get().replace(' ','') == '':
+            messagebox.showinfo('Información','Ingrese una cadena para validar')
+        elif self.cbAutomaton.get() == 'Seleccione un Autómata':
+            messagebox.showinfo('Información','No se ha seleccionado un autómata')
+        else:
+            index = int(self.cbAutomaton.get().split(' - ')[0]) - 1
+            if self.ctrl.validateString(index,self.string1.get()) == 'Cadena Válida':
+                self.route.configure(text=f'Ruta: \n{self.ctrl.returnRoute(index,self.string1.get())}')
+            else:
+                messagebox.showinfo('Información',self.ctrl.returnRoute(index,self.string1.get()))
+                self.route.configure(text=f'Ruta: ')
+
     def viewAutomaton(self,event):
         index = int(self.cbAutomaton.get().split(' - ')[0]) - 1
         self.alphabet.configure(text=f'Alfabeto: {self.ctrl.getAlphabet(index)}')
@@ -113,6 +126,7 @@ class AutomatonPane(tk.Frame):
     def option1(self):
         self.Panel2.grid_remove()
         self.Panel1.grid()
+        self.getRoute()
 
     def option2(self):
         self.Panel1.grid_remove()

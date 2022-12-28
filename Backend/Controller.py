@@ -153,35 +153,59 @@ class Controller:
             keys.append(k)
         return keys
 
-    def evaluateStack(self,path,transitions,state,acceptance,string,stack : Stack):
-        transition = transitions[state]
+    def rewritePast(self,pass_,accumulated):
+        for i in range(len(pass_) - 1,0,-1):
+            pass_[i][0] = pass_[i - 1][0]
+        pass_[0][0] = ''
+        pass_.append(['',accumulated.replace('$',''),''])
+        return pass_
+
+    def evaluateStack(self,path,state,transitions,entry,acceptance,string,stack : Stack,acumulated,route,pass_):
+        transition = transitions[entry]
         if stack.checkPop(transition['pop']):
             stack.popStack(transition['pop'])
             stack.addStack(transition['add'])
-            return self.evaluateCharacters(path,transition['destiny'],acceptance,string,stack)
+            t = '{}, {}, {}; {}, {}'.format(state,entry,transition['pop'],transition['destiny'],transition['add'])
+            route.append(t)
+            acumulated += entry
+            pass_.append([''.join(stack),acumulated.replace('$',''),t])
+            return self.evaluateCharacters(path,transition['destiny'],acceptance,string,stack,acumulated,route,pass_ )
 
-    def evaluateCharacters(self,path,state,acceptance,string,stack : Stack):
+    def evaluateCharacters(self,path,state,acceptance,string,stack : Stack,acumulated,route,pass_):
         transitions = path[state]
         keys = self.getKeys(transitions)
-        #print(stack,string)
         if len(string) == 0:
             if len(stack) == 0 and state in acceptance:
-                return True
+                return True, route, self.rewritePast(pass_,acumulated)
             if '$' in keys:
-                return self.evaluateStack(path,transitions,'$',acceptance,string,stack)
+                return self.evaluateStack(path,state,transitions,'$',acceptance,'',stack,acumulated,route,pass_)
         if len(string) > 0:
             if string[0] in keys:
-                return self.evaluateStack(path,transitions,string[0],acceptance,''.join(string[1:]),stack)
+                return self.evaluateStack(path,state,transitions,string[0],acceptance,''.join(string[1:]),stack,acumulated,route,pass_)
             if '$' in keys:
-                return self.evaluateStack(path,transitions,'$',acceptance,string,stack)
+                return self.evaluateStack(path,state,transitions,'$',acceptance,string,stack,acumulated,route,pass_)
         return False
 
+    # enviando valores al frontend
     def validateString(self,index,string):
         path = self.stackAutomata[index].path
         initial = self.stackAutomata[index].initialState
         accepting = self.stackAutomata[index].acceptingStates
-        if self.evaluateCharacters(path,initial,accepting,string,Stack()):
+
+        isValid = self.evaluateCharacters(path,initial,accepting,string,Stack(),'',[],[])
+        if isValid:
             return 'Cadena Válida'
+        else:
+            return 'Cadena Invalida'
+
+    def returnRoute(self,index,string):
+        path = self.stackAutomata[index].path
+        initial = self.stackAutomata[index].initialState
+        accepting = self.stackAutomata[index].acceptingStates
+
+        isValid = self.evaluateCharacters(path,initial,accepting,string,Stack(),'',[],[])
+        if isValid:
+            return '\n'.join(isValid[1])
         else:
             return 'Cadena Invalida'
 
