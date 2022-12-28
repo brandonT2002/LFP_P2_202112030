@@ -162,7 +162,7 @@ class Controller:
 
     def evaluateCharacters(self,path,state,acceptance,string,stack : Stack):
         transitions = path[state]
-        keys = keys = self.getKeys(transitions)
+        keys = self.getKeys(transitions)
         #print(stack,string)
         if len(string) == 0:
             if len(stack) == 0 and state in acceptance:

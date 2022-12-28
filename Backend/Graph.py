@@ -11,9 +11,12 @@ class dotReports:
         dot += f'\nEstados: {", ".join(automaton.states)}<br align="left"/>'
         dot += f'\nEstado inicial: {automaton.initialState}<br align="left"/>'
         dot += f'\nEstados de aceptación: {",".join(automaton.acceptingStates)}<br align="left"/>'
+        dot += f'\nProducciones:<br align="left"/>'
 
         items = ''
-        dot += f'\n>\n];'
+        for transition in automaton.transitions:
+            items += f'\n{transition.origin}, {transition.entrance}, {transition.stackOutput}, {transition.destiny}, {transition.stackInput} <br align="left"/>'
+        dot += f'{items}\n>\n];'
         dot += '\nrankdir=LR;\n'
 
         items = ''
