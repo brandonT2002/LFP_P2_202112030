@@ -42,3 +42,53 @@ class dotReports:
 
         os.system('dot -Tpdf Reports/ReportSA.txt -o Reports/ReportSA.pdf')
         webbrowser.open('Reports\ReportSA.pdf')
+
+    def generateTable(self,table : list):
+        dot = 'digraph structs {\nnode [shape=record];\nstruct [label="'
+        dot += '\n{<f0> Iteración|'
+        items = ''
+        for i in range(len(table)):
+            if i < len(table) - 1:
+                items += f'<f{i + 1}>{i}|'
+            else:
+                items += f'<f{i + 1}>{i}'
+        dot += items
+        dot += '}|'
+
+        dot += '\n{<f0> Pila|'
+        items = ''
+        for i in range(len(table)):
+            if i < len(table) - 1:
+                items += f'<f{i + 1}>{table[i][0]}|'
+            else:
+                items += f'<f{i + 1}>{table[i][0]}'
+        dot += items
+        dot += '}|'
+
+        dot += '\n{<f0> Entrada|'
+        items = ''
+        for i in range(len(table)):
+            if i < len(table) - 1:
+                items += f'<f{i + 1}>{table[i][1]}|'
+            else:
+                items += f'<f{i + 1}>{table[i][1]}'
+        dot += items
+        dot += '}|'
+
+        dot += '\n{<f0> Transición|'
+        items = ''
+        for i in range(len(table)):
+            if i < len(table) - 1:
+                items += f'<f{i + 1}>{table[i][2]}|'
+            else:
+                items += f'<f{i + 1}>{table[i][2]}'
+        dot += items
+        dot += '}'
+
+        dot += '"\n];\n}'
+
+        with open('Reports/ReportPass.txt','w',encoding='utf-8') as report:
+            report.write(dot)
+
+        os.system('dot -Tpdf Reports/ReportPass.txt -o Reports/ReportPass.pdf')
+        webbrowser.open('Reports\ReportPass.pdf')

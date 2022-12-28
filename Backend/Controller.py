@@ -144,9 +144,6 @@ class Controller:
         if self.viewLine():
             self.identifyElementsAPL()
 
-    def generatedReport(self,index):
-        dotReports().generateSAReport(self.stackAutomata[index])
-
     def getKeys(self,transitions):
         keys = []
         for k in transitions:
@@ -186,6 +183,21 @@ class Controller:
                 return self.evaluateStack(path,state,transitions,'$',acceptance,string,stack,acumulated,route,pass_)
         return False
 
+    # generando reportes
+    def generatedReport(self,index):
+        dotReports().generateSAReport(self.stackAutomata[index])
+
+    def generateTalbe(self,index,string):
+        path = self.stackAutomata[index].path
+        initial = self.stackAutomata[index].initialState
+        accepting = self.stackAutomata[index].acceptingStates
+
+        isValid = self.evaluateCharacters(path,initial,accepting,string,Stack(),'',[],[])
+        if isValid:
+            dotReports().generateTable(isValid[2])
+        else:
+            return 'Verifique la Cadena'
+
     # enviando valores al frontend
     def validateString(self,index,string):
         path = self.stackAutomata[index].path
@@ -207,7 +219,7 @@ class Controller:
         if isValid:
             return '\n'.join(isValid[1])
         else:
-            return 'Cadena Invalida'
+            return 'Verifique la Cadena'
 
     def getAlphabet(self,index):
         return ', '.join(self.stackAutomata[index].alphabet)

@@ -1,0 +1,9 @@
+digraph structs {
+node [shape=record];
+struct [label="
+{<f0> Iteración|<f1>0|<f2>1|<f3>2|<f4>3|<f5>4|<f6>5|<f7>6}|
+{<f0> Pila|<f1>|<f2>#|<f3>#a|<f4>#aa|<f5>#a|<f6>#|<f7>}|
+{<f0> Entrada|<f1>|<f2>a|<f3>aa|<f4>aab|<f5>aabb|<f6>aabb|<f7>aabb}|
+{<f0> Transición|<f1>I, $, $; A, #|<f2>A, a, $; B, a|<f3>B, a, $; B, a|<f4>B, b, a; C, $|<f5>C, b, a; C, $|<f6>C, $, #; F, $|<f7>}"
+];
+}

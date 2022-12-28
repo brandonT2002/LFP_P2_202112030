@@ -33,12 +33,12 @@ class AutomatonPane(tk.Frame):
         self.information = Button(master=self,text='Información General',font=('Roboto Medium',11),bg='#0059b3',activebackground='#0059b3',foreground='white',activeforeground='white',width=15,height=1,cursor='hand2',command=self.generatePDF)
         self.information.grid(row=1,column=2,columnspan=2,pady=0,padx=(10,20),sticky='nwe')
 
-        self.alphabet = Label(master=self,text='Alfabeto: ',font=('Roboto Medium',20),background='#2A2D2E',foreground='white')
-        self.alphabet.grid(row=2,column=2,columnspan=2,pady=(10,10),padx=20,sticky='nw')
-
         self.string1 = Entry(master=self,bg='#343638',foreground='white',font=('Roboto Medium',16))
         self.string1.configure(disabledbackground='#343638',disabledforeground='white')
-        self.string1.grid(row=2,column=0,pady=(10,10),padx=20,columnspan=2,sticky='nwe')
+        self.string1.grid(row=2,column=0,pady=(10,10),padx=(20,10),columnspan=2,sticky='nwe')
+
+        self.alphabet = Label(master=self,text='Alfabeto: ',font=('Roboto Medium',20),background='#2A2D2E',foreground='white')
+        self.alphabet.grid(row=2,column=2,columnspan=2,pady=(10,10),padx=(10,20),sticky='nw')
 
         self.validateString = Button(master=self,text='Validar Cadena',font=('Roboto Medium',11),bg='#0059b3',activebackground='#0059b3',foreground='white',activeforeground='white',width=15,height=1,cursor='hand2',command=self.getString)
         self.validateString.grid(row=3,column=0,pady=(10,10),padx=(20,10),sticky='nwe')
@@ -49,7 +49,7 @@ class AutomatonPane(tk.Frame):
         self.stepByStep = Button(master=self,text='Paso a Paso',font=('Roboto Medium',11),bg='#0059b3',activebackground='#0059b3',foreground='white',activeforeground='white',width=15,height=1,cursor='hand2',command=self.option2)
         self.stepByStep.grid(row=3,column=2,pady=(10,10),padx=(10,10),sticky='nwe')
 
-        self.onePass = Button(master=self,text='Una Pasada',font=('Roboto Medium',11),bg='#0059b3',activebackground='#0059b3',foreground='white',activeforeground='white',width=15,height=1,cursor='hand2')
+        self.onePass = Button(master=self,text='Una Pasada',font=('Roboto Medium',11),bg='#0059b3',activebackground='#0059b3',foreground='white',activeforeground='white',width=15,height=1,cursor='hand2',command=self.getTable)
         self.onePass.grid(row=3,column=3,pady=(10,10),padx=(10,20),sticky='nwe')
 
         self.pathPane()
@@ -118,6 +118,18 @@ class AutomatonPane(tk.Frame):
             else:
                 messagebox.showinfo('Información',self.ctrl.returnRoute(index,self.string1.get()))
                 self.route.configure(text=f'Ruta: ')
+
+    def getTable(self):
+        if self.string1.get().replace(' ','') == '':
+            messagebox.showinfo('información','Ingrese una cadena para validar')
+        elif self.cbAutomaton.get() == 'Seleccione un Autómata':
+            messagebox.showinfo('Información','No se ha seleccionado un autómata')
+        else:
+            index = int(self.cbAutomaton.get().split(' - ')[0]) - 1
+            if self.ctrl.validateString(index,self.string1.get()) == 'Cadena Válida':
+                self.ctrl.generateTalbe(index,self.string1.get())
+            else:
+                messagebox.showinfo('Información',self.ctrl.generateTalbe(index,self.string1.get()))
 
     def viewAutomaton(self,event):
         index = int(self.cbAutomaton.get().split(' - ')[0]) - 1
