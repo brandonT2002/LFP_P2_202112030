@@ -119,6 +119,18 @@ class AutomatonPane(tk.Frame):
                 messagebox.showinfo('Información',self.ctrl.returnRoute(index,self.string1.get()))
                 self.route.configure(text=f'Ruta: ')
 
+    def getStep(self):
+        if self.string1.get().replace(' ','') == '':
+            messagebox.showinfo('Información','Ingrese una cadena para validar')
+        elif self.cbAutomaton.get() == 'Seleccione un Autómata':
+            messagebox.showinfo('Información','No se ha seleccionado un autómata')
+        else:
+            index = int(self.cbAutomaton.get().split(' - ')[0]) - 1
+            if self.ctrl.validateString(index,self.string1.get()) == 'Cadena Válida':
+                self.ctrl.generateStep(index,self.string1.get())
+            else:
+                messagebox.showinfo('Información',self.ctrl.generateStep(index,self.string1.get()))
+
     def getTable(self):
         if self.string1.get().replace(' ','') == '':
             messagebox.showinfo('información','Ingrese una cadena para validar')
@@ -143,3 +155,4 @@ class AutomatonPane(tk.Frame):
     def option2(self):
         self.Panel1.grid_remove()
         self.Panel2.grid()
+        self.getStep()

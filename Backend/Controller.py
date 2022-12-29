@@ -187,17 +187,6 @@ class Controller:
     def generatedReport(self,index):
         dotReports().generateSAReport(self.stackAutomata[index])
 
-    def generateTalbe(self,index,string):
-        path = self.stackAutomata[index].path
-        initial = self.stackAutomata[index].initialState
-        accepting = self.stackAutomata[index].acceptingStates
-
-        isValid = self.evaluateCharacters(path,initial,accepting,string,Stack(),'',[],[])
-        if isValid:
-            dotReports().generateTable(isValid[2],self.stackAutomata[index].name)
-        else:
-            return 'Verifique la Cadena'
-
     # enviando valores al frontend
     def validateString(self,index,string):
         path = self.stackAutomata[index].path
@@ -218,6 +207,40 @@ class Controller:
         isValid = self.evaluateCharacters(path,initial,accepting,string,Stack(),'',[],[])
         if isValid:
             return '\n'.join(isValid[1])
+        else:
+            return 'Verifique la Cadena'
+
+    def generateStep(self,index,string):
+        path = self.stackAutomata[index].path
+        initial = self.stackAutomata[index].initialState
+        accepting = self.stackAutomata[index].acceptingStates
+
+        isValid = self.evaluateCharacters(path,initial,accepting,string,Stack(),'',[],[])
+        if isValid:
+            #print(isValid[2])
+            for i in range(len(isValid[2])):
+                #print('stack: ',isValid[2][i][0])
+                #print('entry: ',isValid[2][i][1])
+                route = isValid[2][i][2]
+                route = route.split(';')
+                if len(route) > 1:
+                    route[0] = route[0].split(',')
+                    route[1] = route[1].split(',')
+                    dotReports().generateStepByStep(self.stackAutomata[index],isValid[2][i][0],isValid[2][i][1],route[0][0],route[1][0],i)
+                #print(i,';',len(route))
+                elif len(route) < 2:
+                    dotReports().generateStepByStep(self.stackAutomata[index],isValid[2][i][0],isValid[2][i][1],'','',i)
+        else:
+            return 'Verifique la Cadena'
+
+    def generateTalbe(self,index,string):
+        path = self.stackAutomata[index].path
+        initial = self.stackAutomata[index].initialState
+        accepting = self.stackAutomata[index].acceptingStates
+
+        isValid = self.evaluateCharacters(path,initial,accepting,string,Stack(),'',[],[])
+        if isValid:
+            dotReports().generateTable(isValid[2],self.stackAutomata[index].name)
         else:
             return 'Verifique la Cadena'
 

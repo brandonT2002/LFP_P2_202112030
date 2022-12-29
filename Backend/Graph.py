@@ -92,3 +92,43 @@ class dotReports:
 
         os.system('dot -Tpdf Reports/ReportPass.txt -o Reports/ReportPass.pdf')
         webbrowser.open('Reports\ReportPass.pdf')
+
+    # def generateStepByStep(self,automaton : ATP,transition : list,name,nameFile):
+    def generateStepByStep(self,automaton : ATP,stack,entry,origin,destiny,i):
+        dot = 'digraph G {\ngraph [labelloc=t];\nnode [shape=circle style=filled fillcolor="#ffffff"];\nfontsize=30;\nlabel = "' + automaton.name +'";\nrankdir=LR;'
+
+        items = ''
+        for state in automaton.states:
+            items += f'{state};'
+        dot += items
+
+        if origin != '':
+            dot += f'{origin} [fillcolor="#83BD75"]'
+        else:
+            items = ''
+            for accepted in automaton.acceptingStates:
+                items += f'\n{accepted} [fillcolor="#83BD75"];'
+            dot += items
+
+        items = ''
+        for accepted in automaton.acceptingStates:
+            items += f'\n{accepted} [peripheries=2];'
+        dot += items
+
+        items = ''
+        for transition in automaton.transitions:
+            if origin == transition.origin and destiny == transition.destiny:
+                    items += f'\n{transition.origin} -> {transition.destiny} [label="{transition.entrance},{transition.stackOutput};{transition.stackInput}" fontcolor="#FF1E1E"];'
+            else:
+                items += f'\n{transition.origin} -> {transition.destiny} [label="{transition.entrance},{transition.stackOutput};{transition.stackInput}"];'
+        dot += items
+
+        dot += '\nnode [shape=record];\nstack [label="\n{<f0> Pila}|\n{<f0> ' + stack + '}"\n];\nentry [label="\n{<f0> entrada}|\n{<f0> ' + entry + '}"\n];'
+
+        dot += '\n}'
+
+        with open(f'Image/Step{i}.txt','w',encoding='utf-8') as report:
+            report.write(dot)
+
+        os.system(f'dot -Tpng Image/Step{i}.txt -o Image/Step{i}.png')
+        #webbrowser.open('Image\Step.png')
