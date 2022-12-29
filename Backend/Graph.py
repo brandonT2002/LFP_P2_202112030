@@ -127,8 +127,8 @@ class dotReports:
 
         dot += '\n}'
 
-        with open(f'Image/Step{i}.txt','w',encoding='utf-8') as report:
+        with open(f'Image/Steps/Step{i}.txt','w',encoding='utf-8') as report:
             report.write(dot)
 
-        os.system(f'dot -Tpng Image/Step{i}.txt -o Image/Step{i}.png')
+        os.system(f'dot -Tpng Image/Steps/Step{i}.txt -o Image/Steps/Step{i}.png')
         #webbrowser.open('Image\Step.png')

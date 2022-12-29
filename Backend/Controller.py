@@ -2,6 +2,7 @@ from Backend.GLC import *
 from Backend.ATP import *
 from Backend.Stack import Stack
 from Backend.Graph import dotReports
+import os
 
 class Controller:
     def __init__(self) -> None:
@@ -217,7 +218,10 @@ class Controller:
 
         isValid = self.evaluateCharacters(path,initial,accepting,string,Stack(),'',[],[])
         if isValid:
-            #print(isValid[2])
+            self.steps = 0
+            directory = 'Image/Steps'
+            for f in os.listdir(directory):
+                os.remove(os.path.join(directory,f))
             for i in range(len(isValid[2])):
                 route = isValid[2][i][2].replace(' ','')
                 route = route.split(';')
@@ -227,6 +231,8 @@ class Controller:
                     dotReports().generateStepByStep(self.stackAutomata[index],isValid[2][i][0],isValid[2][i][1],route[0][0],route[1][0],i)
                 elif len(route) < 2:
                     dotReports().generateStepByStep(self.stackAutomata[index],isValid[2][i][0],isValid[2][i][1],'','',i)
+                self.steps += 1
+            #print('steps ',self.steps)
         else:
             return 'Verifique la Cadena'
 

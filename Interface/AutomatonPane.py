@@ -10,6 +10,9 @@ class AutomatonPane(tk.Frame):
         self.configure(bg='#2A2D2E')
         self.grid(row=0,column=1,pady=20,padx=20,sticky='nswe')
         self.ctrl : Controller = None
+
+        #self.current = 1
+
         self.components()
 
     def components(self):
@@ -43,10 +46,10 @@ class AutomatonPane(tk.Frame):
         self.validateString = Button(master=self,text='Validar Cadena',font=('Roboto Medium',11),bg='#0059b3',activebackground='#0059b3',foreground='white',activeforeground='white',width=15,height=1,cursor='hand2',command=self.getString)
         self.validateString.grid(row=3,column=0,pady=(10,10),padx=(20,10),sticky='nwe')
 
-        self.validationPath = Button(master=self,text='Ruta de Validación',font=('Roboto Medium',11),bg='#0059b3',activebackground='#0059b3',foreground='white',activeforeground='white',width=15,height=1,cursor='hand2',command=self.option1)
+        self.validationPath = Button(master=self,text='Ruta de Validación',font=('Roboto Medium',11),bg='#0059b3',activebackground='#0059b3',foreground='white',activeforeground='white',width=15,height=1,cursor='hand2',command=self.getRoute)
         self.validationPath.grid(row=3,column=1,pady=(10,10),padx=(10,10),sticky='nwe')
 
-        self.stepByStep = Button(master=self,text='Paso a Paso',font=('Roboto Medium',11),bg='#0059b3',activebackground='#0059b3',foreground='white',activeforeground='white',width=15,height=1,cursor='hand2',command=self.option2)
+        self.stepByStep = Button(master=self,text='Paso a Paso',font=('Roboto Medium',11),bg='#0059b3',activebackground='#0059b3',foreground='white',activeforeground='white',width=15,height=1,cursor='hand2',command=self.getStep)
         self.stepByStep.grid(row=3,column=2,pady=(10,10),padx=(10,10),sticky='nwe')
 
         self.onePass = Button(master=self,text='Una Pasada',font=('Roboto Medium',11),bg='#0059b3',activebackground='#0059b3',foreground='white',activeforeground='white',width=15,height=1,cursor='hand2',command=self.getTable)
@@ -76,19 +79,14 @@ class AutomatonPane(tk.Frame):
         self.Panel2.columnconfigure((0,1,2,3),weight=1)
         self.Panel2.columnconfigure(4,weight=0)
 
-        self.previous = Button(master=self.Panel2,text='Anterior ←',font=('Roboto Medium',11),bg='#107C41',activebackground='#107C41',foreground='white',activeforeground='white',width=15,height=1,cursor='hand2')
+        self.previous = Button(master=self.Panel2,text='← Anterior',font=('Roboto Medium',11),bg='#107C41',activebackground='#107C41',foreground='white',activeforeground='white',width=15,height=1,cursor='hand2',command=self.previousImage)
         self.previous.grid(row=0,column=1,columnspan=1,padx=(20,10),sticky='new')
 
-        self.next = Button(master=self.Panel2,text='Siguiente →',font=('Roboto Medium',11),bg='#107C41',activebackground='#107C41',foreground='white',activeforeground='white',width=15,height=1,cursor='hand2')
+        self.next = Button(master=self.Panel2,text='Siguiente →',font=('Roboto Medium',11),bg='#107C41',activebackground='#107C41',foreground='white',activeforeground='white',width=15,height=1,cursor='hand2',command=self.nextImage)
         self.next.grid(row=0,column=2,columnspan=1,padx=(10,20),sticky='new')
 
-        image = Image.open('Image/gr.png')
-        image = image.resize((600,375),Image.ANTIALIAS)
-        image = ImageTk.PhotoImage(image)
-
-        label = Label(self.Panel2,image=image,background='#2A2D2E')
-        label.img = image
-        label.grid(row=1,column=0,rowspan=3,columnspan=4,pady=(0,20),sticky='nswe')
+        self.label = Label(self.Panel2,background='#2A2D2E')
+        self.label.grid(row=1,column=0,rowspan=3,columnspan=4,pady=(0,20),sticky='nswe')
 
     def generatePDF(self):
         if self.cbAutomaton.get() == 'Seleccione un Autómata':
@@ -115,9 +113,11 @@ class AutomatonPane(tk.Frame):
             index = int(self.cbAutomaton.get().split(' - ')[0]) - 1
             if self.ctrl.validateString(index,self.string1.get()) == 'Cadena Válida':
                 self.route.configure(text=f'Ruta: \n{self.ctrl.returnRoute(index,self.string1.get())}')
+                self.option1()
             else:
                 messagebox.showinfo('Información',self.ctrl.returnRoute(index,self.string1.get()))
                 self.route.configure(text=f'Ruta: ')
+                self.Panel1.grid_remove()
 
     def getStep(self):
         if self.string1.get().replace(' ','') == '':
@@ -128,8 +128,13 @@ class AutomatonPane(tk.Frame):
             index = int(self.cbAutomaton.get().split(' - ')[0]) - 1
             if self.ctrl.validateString(index,self.string1.get()) == 'Cadena Válida':
                 self.ctrl.generateStep(index,self.string1.get())
+                self.current = 0
+                self.step = self.ctrl.steps
+                self.option2()
+                self.getImage()
             else:
                 messagebox.showinfo('Información',self.ctrl.generateStep(index,self.string1.get()))
+                self.Panel2.grid_remove()
 
     def getTable(self):
         if self.string1.get().replace(' ','') == '':
@@ -143,6 +148,31 @@ class AutomatonPane(tk.Frame):
             else:
                 messagebox.showinfo('Información',self.ctrl.generateTable(index,self.string1.get()))
 
+    def getImage(self):
+        image = Image.open('Image/Steps/step0.png')
+        image = image.resize((800,375),Image.ANTIALIAS)
+        image = ImageTk.PhotoImage(image)
+        self.label.configure(image=image)
+        self.label.img = image
+
+    def nextImage(self):
+        if self.current < self.step-1:
+            self.current += 1
+            image = Image.open(f'Image/Steps/step{self.current}.png')
+            image = image.resize((800,375),Image.ANTIALIAS)
+            image = ImageTk.PhotoImage(image)
+            self.label.configure(image=image)
+            self.label.img = image
+
+    def previousImage(self):
+        if self.current <= self.step and self.current > 0:
+            self.current -= 1
+            image = Image.open(f'Image/Steps/step{self.current}.png')
+            image = image.resize((800,375),Image.ANTIALIAS)
+            image = ImageTk.PhotoImage(image)
+            self.label.configure(image=image)
+            self.label.img = image
+
     def viewAutomaton(self,event):
         index = int(self.cbAutomaton.get().split(' - ')[0]) - 1
         self.alphabet.configure(text=f'Alfabeto: {self.ctrl.getAlphabet(index)}')
@@ -150,9 +180,7 @@ class AutomatonPane(tk.Frame):
     def option1(self):
         self.Panel2.grid_remove()
         self.Panel1.grid()
-        self.getRoute()
 
     def option2(self):
         self.Panel1.grid_remove()
         self.Panel2.grid()
-        self.getStep()
