@@ -139,9 +139,9 @@ class AutomatonPane(tk.Frame):
         else:
             index = int(self.cbAutomaton.get().split(' - ')[0]) - 1
             if self.ctrl.validateString(index,self.string1.get()) == 'Cadena Válida':
-                self.ctrl.generateTalbe(index,self.string1.get())
+                self.ctrl.generateTable(index,self.string1.get())
             else:
-                messagebox.showinfo('Información',self.ctrl.generateTalbe(index,self.string1.get()))
+                messagebox.showinfo('Información',self.ctrl.generateTable(index,self.string1.get()))
 
     def viewAutomaton(self,event):
         index = int(self.cbAutomaton.get().split(' - ')[0]) - 1

@@ -1,0 +1,23 @@
+digraph G {
+graph [labelloc=t];
+node [shape=circle style=filled fillcolor="#ffffff"];
+fontsize=30;
+label = "AP1";
+rankdir=LR;I;A;B;C;F;B [fillcolor="#83BD75"]
+F [peripheries=2];
+I -> A [label="$,$;#"];
+A -> B [label="a,$;a"];
+B -> B [label="a,$;a"];
+B -> C [label="b,a;$" fontcolor="#FF1E1E"];
+C -> C [label="b,a;$"];
+C -> F [label="$,#;$"];
+node [shape=record];
+stack [label="
+{<f0> Pila}|
+{<f0> #aa}"
+];
+entry [label="
+{<f0> entrada}|
+{<f0> aab}"
+];
+}
