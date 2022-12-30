@@ -209,15 +209,14 @@ class dotReports:
             link += self.links(productions,i + 1)
         return link
 
-    def branchTree(self,productions,i):
+    def derivationTree(self,productions,i):
         dot = 'digraph G {\nNode[shape=none];\nEdge[arrowhead=none];'
         dot += self.nodes(productions,i)
         dot += self.subgraphs(productions,i)
         dot += self.links(productions,i)
         dot += '\n}'
 
-        with open('Reports/BranchTree.txt','w',encoding='utf-8') as report:
+        with open('Reports/DerivationTree.txt','w',encoding='utf-8') as report:
             report.write(dot)
 
-        os.system('dot -Tpng Reports/BranchTree.txt -o Reports/BranchTree.png')
-        webbrowser.open('Reports\BranchTree.png')
+        os.system('dot -Tpng Reports/DerivationTree.txt -o Reports/DerivationTree.png')
