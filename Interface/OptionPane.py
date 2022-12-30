@@ -4,6 +4,7 @@ from tkinter.filedialog import askopenfilename
 from Backend.Controller import Controller
 from Interface.AutomatonPane import AutomatonPane
 from Interface.GrammarPane import GrammarPane
+from Interface.SplashScreen import SplashScreen
 
 class OptionPane(tk.Frame):
     def __init__(self,root,grammar : GrammarPane,automaton : AutomatonPane):
