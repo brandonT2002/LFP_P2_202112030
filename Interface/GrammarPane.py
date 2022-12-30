@@ -33,10 +33,13 @@ class GrammarPane(tk.Frame):
         self.information = Button(master=self,text='Información General',font=('Roboto Medium',11),bg='#0059b3',activebackground='#0059b3',foreground='white',activeforeground='white',width=15,height=1,cursor='hand2',command=self.getReport)
         self.information.grid(row=1,column=2,pady=0,padx=(10,10),sticky='nwe')
 
-        self.branchTree = Button(master=self,text='Árbol de Derivación',font=('Roboto Medium',11),bg='#0059b3',activebackground='#0059b3',foreground='white',activeforeground='white',width=15,height=1,cursor='hand2',command=self.getDerivationTree)
-        self.branchTree.grid(row=1,column=3,pady=0,padx=(10,20),sticky='nwe')
+        self.derivationTree = Button(master=self,text='Árbol de Derivación',font=('Roboto Medium',11),bg='#0059b3',activebackground='#0059b3',foreground='white',activeforeground='white',width=15,height=1,cursor='hand2',command=self.getDerivationTree)
+        self.derivationTree.grid(row=1,column=3,pady=0,padx=(10,20),sticky='nwe')
 
-        self.delete = Button(master=self,text='Limpiar',font=('Roboto Medium',11),bg='#0059b3',activebackground='#0059b3',foreground='white',activeforeground='white',width=15,height=1,cursor='hand2')
+        self.label = Label(self,background='#2A2D2E')
+        self.label.grid(row=2,column=0,rowspan=3,columnspan=4,pady=20,padx=20,sticky='nswe')
+
+        self.delete = Button(master=self,text='Limpiar',font=('Roboto Medium',11),bg='#0059b3',activebackground='#0059b3',foreground='white',activeforeground='white',width=15,height=1,cursor='hand2',command=self.clean)
         self.delete.grid(row=5,column=3,pady=(0,0),padx=(10,20),sticky='swe')
         self.delete.grid_remove()
 
@@ -47,12 +50,12 @@ class GrammarPane(tk.Frame):
             index = int(self.cbGrammar.get().split(' - ')[0]) - 1
             self.ctrl.generatedReportG(index)
             image = Image.open('Reports/ReportG.png')
-            #image = image.resize((700,450),Image.ANTIALIAS)
             image = ImageTk.PhotoImage(image)
 
-            label = Label(self,image=image,background='#2A2D2E')
-            label.img = image
-            label.grid(row=2,column=0,rowspan=3,columnspan=4,pady=20,padx=20,sticky='nswe')
+            self.label.destroy()
+            self.label = Label(self,image=image,background='#2A2D2E')
+            self.label.img = image
+            self.label.grid(row=2,column=0,rowspan=3,columnspan=4,pady=20,padx=20,sticky='nswe')
 
             self.delete.grid()
 
@@ -65,10 +68,16 @@ class GrammarPane(tk.Frame):
             image = image.resize((200,450),Image.ANTIALIAS)
             image = ImageTk.PhotoImage(image)
 
-            label = Label(self,image=image,background='#2A2D2E')
-            label.img = image
-            label.grid(row=2,column=0,rowspan=3,columnspan=4,pady=20,padx=20,sticky='nswe')
+            self.label.destroy()
+            self.label = Label(self,image=image,background='#2A2D2E')
+            self.label.img = image
+            self.label.grid(row=2,column=0,rowspan=3,columnspan=4,pady=20,padx=20,sticky='nswe')
 
             self.delete.grid()
 
             self.ctrl.generatedDerivationTree(index)
+
+    def clean(self):
+        self.cbGrammar.set('Seleccione una Gramática')
+        self.label.destroy()
+        self.delete.grid_remove()
