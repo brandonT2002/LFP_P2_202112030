@@ -167,3 +167,57 @@ class dotReports:
             report.write(dot)
 
         os.system('dot -Tpng Reports/ReportG.txt -o Reports/ReportG.png')
+
+    def nodes(self,productions,i):
+        node = ''
+        if i < len(productions):
+            production = productions[i]
+            node += f'\n{i} [label = "{production.origin}" group="0"];'
+            if production.input1:
+                node += f'\n{i}1 [label = "{production.input1}" group="1"];'
+            if production.input2:
+                node += f'\n{i}2 [label = "{production.input2}" group="2"];'
+            node += self.nodes(productions,i + 1)
+        return node
+
+    def subgraphs(self,productions,i):
+        subgraph = ''
+        if i < len(productions):
+            production = productions[i]
+            if i < len(productions) - 1:
+                if production.input1 or production.input2:
+                    subgraph += '\nsubgraph {\nrank = same;\n'
+                    subgraph += f'{i}1'
+                    if production.input1:
+                        subgraph += f' -> {i + 1}'
+                    if production.input2:
+                        subgraph += f' -> {i}2'
+                    subgraph += '[color=none];\n}'
+            subgraph += self.subgraphs(productions,i + 1)
+        return subgraph
+
+    def links(self,productions,i):
+        link = ''
+        if i < len(productions):
+            production = productions[i]
+            if i > 0:
+                link += f'\n{i - 1} -> {i};'
+            if production.input1:
+                link += f'\n{i} -> {i}1;'
+            if production.input2:
+                link += f'\n{i} -> {i}2;'
+            link += self.links(productions,i + 1)
+        return link
+
+    def branchTree(self,productions,i):
+        dot = 'digraph G {\nNode[shape=none];\nEdge[arrowhead=none];'
+        dot += self.nodes(productions,i)
+        dot += self.subgraphs(productions,i)
+        dot += self.links(productions,i)
+        dot += '\n}'
+
+        with open('Reports/BranchTree.txt','w',encoding='utf-8') as report:
+            report.write(dot)
+
+        os.system('dot -Tpng Reports/BranchTree.txt -o Reports/BranchTree.png')
+        webbrowser.open('Reports\BranchTree.png')

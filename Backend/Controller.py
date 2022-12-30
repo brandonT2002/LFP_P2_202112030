@@ -95,6 +95,9 @@ class Controller:
     def generatedReportG(self,index):
         dotReports().generateGReport(self.grammars[index])
 
+    def generatedBranchTree(self,index):
+        print(dotReports().branchTree(self.grammars[index].productions,0))
+
     def grammarRecognition(self):
         self.inputFile = self.inputFile.split('\n')
         self.identifyElementsGLC()
