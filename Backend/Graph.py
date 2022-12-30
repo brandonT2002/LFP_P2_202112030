@@ -167,4 +167,3 @@ class dotReports:
             report.write(dot)
 
         os.system('dot -Tpng Reports/ReportG.txt -o Reports/ReportG.png')
-        webbrowser.open('Reports\ReportG.png')

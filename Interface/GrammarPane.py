@@ -36,16 +36,9 @@ class GrammarPane(tk.Frame):
         self.branchTree = Button(master=self,text='Árbol de Derivación',font=('Roboto Medium',11),bg='#0059b3',activebackground='#0059b3',foreground='white',activeforeground='white',width=15,height=1,cursor='hand2')
         self.branchTree.grid(row=1,column=3,pady=0,padx=(10,20),sticky='nwe')
 
-        image = Image.open('Image/gr.png')
-        image = image.resize((700,450),Image.ANTIALIAS)
-        image = ImageTk.PhotoImage(image)
-
-        label = Label(self,image=image,background='#2A2D2E')
-        label.img = image
-        label.grid(row=2,column=0,rowspan=3,columnspan=4,pady=20,padx=20,sticky='nswe')
-
         self.delete = Button(master=self,text='Limpiar',font=('Roboto Medium',11),bg='#0059b3',activebackground='#0059b3',foreground='white',activeforeground='white',width=15,height=1,cursor='hand2')
         self.delete.grid(row=5,column=3,pady=(0,0),padx=(10,20),sticky='swe')
+        self.delete.grid_remove()
 
     def getReport(self):
         if self.cbGrammar.get() == 'Seleccione una Gramática':
@@ -53,3 +46,12 @@ class GrammarPane(tk.Frame):
         else:
             index = int(self.cbGrammar.get().split(' - ')[0]) - 1
             self.ctrl.generatedReportG(index)
+            image = Image.open('Reports/ReportG.png')
+            #image = image.resize((700,450),Image.ANTIALIAS)
+            image = ImageTk.PhotoImage(image)
+
+            label = Label(self,image=image,background='#2A2D2E')
+            label.img = image
+            label.grid(row=2,column=0,rowspan=3,columnspan=4,pady=20,padx=20,sticky='nswe')
+
+            self.delete.grid()
