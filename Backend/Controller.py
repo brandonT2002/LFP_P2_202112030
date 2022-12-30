@@ -9,6 +9,7 @@ class Controller:
         self.grammars = []
         self.stackAutomata = []
         self.line = 0
+        self.count = 0
 
     # validaciones de lectura
     def popLine(self):
@@ -25,6 +26,12 @@ class Controller:
 
     # ---------------------------------------------
     # módulo gramática libre de contexto
+    def getPathGLC(self):
+        path = self.grammar.path
+        for i in self.grammar.productions:
+            path[i.origin]['exp' + str(len(path[i.origin]))] = {'input0':i.input1,'destiny':i.destiny,'input1':i.input2}
+        return path
+
     def identifyElementsGLC(self):
         if self.line == 0:
             self.grammar = GLC()
@@ -45,8 +52,6 @@ class Controller:
             production = self.popLine().split('>')
             destinationInput = production[1].split(' ')
 
-            exp = []
-
             production[1] = [s for s in destinationInput if s]
             production[0] = production[0].replace(' ','')
             if not production[0] in self.grammar.nonTerminals:
@@ -54,30 +59,35 @@ class Controller:
             if len(production[1]) == 1:
                 if production[1][0] in self.grammar.nonTerminals:
                     self.productions.append(Production(production[0],destiny=production[1][0]))
-                    exp.append(production[1][0])
+
+
                 elif production[1][0] in self.grammar.terminals:
                     self.productions.append(Production(production[0],input1=production[1][0]))
-                    exp.append(production[1][0])
+
+
                 else: self.isValid = False
             elif len(production[1]) == 2:
                 if production[1][0] in self.grammar.terminals and production[1][1] in self.grammar.nonTerminals:
                     self.productions.append(Production(production[0],production[1][0],production[1][1]))
-                    exp.append(production[1][0] + ' ' + production[1][1])
+
+
                 else: self.isValid = False
             elif len(production[1]) == 3:
                 if production[1][0] in self.grammar.terminals and production[1][1] in self.grammar.nonTerminals and production[1][2] in self.grammar.terminals:
                     self.productions.append(Production(production[0],production[1][0],production[1][1],production[1][2]))
-                    exp.append(production[1][0] + ' ' + production[1][1] + ' ' + production[1][2])
                     self.isGLC = True
+
+
                 else: self.isValid = False
-            self.grammar.path[production[0]] = exp
 
         self.line += 1
         if self.viewLine() == '%':
             if self.isValid and self.isGLC:
                 self.grammar.productions = self.productions
+                self.grammar.path = self.getPathGLC()
                 self.grammars.append(self.grammar)
             self.popLine()
+            self.count = 0
             self.line = 0
         if self.viewLine():
             self.identifyElementsGLC()
