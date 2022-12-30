@@ -29,7 +29,7 @@ class Controller:
     def getPathGLC(self):
         path = self.grammar.path
         for i in self.grammar.productions:
-            path[i.origin]['exp' + str(len(path[i.origin]))] = {'input0':i.input1,'destiny':i.destiny,'input1':i.input2}
+            path[i.origin]['exp' + str(len(path[i.origin]))] = {'input1':i.input1,'destiny':i.destiny,'input2':i.input2}
         return path
 
     def identifyElementsGLC(self):
@@ -91,6 +91,9 @@ class Controller:
             self.line = 0
         if self.viewLine():
             self.identifyElementsGLC()
+
+    def generatedReportG(self,index):
+        dotReports().generateGReport(self.grammars[index])
 
     def grammarRecognition(self):
         self.inputFile = self.inputFile.split('\n')

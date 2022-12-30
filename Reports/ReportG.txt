@@ -1,0 +1,18 @@
+digraph G {
+Node[shape=none];
+labelloc=t;
+fontsize=30;
+label = "Grm_1";
+L[label=<
+No terminales: S, A, B, C<br align="left"/>
+Terminales: a, b, z<br align="left"/>
+No terminal inicial: S<br align="left"/>
+Producciones:<br align="left"/>
+S &#62; A<br align="left"/>
+A &#62; a A a<br align="left"/>
+      | B<br align="left"/>
+B &#62; b B b<br align="left"/>
+      | C<br align="left"/>
+C &#62; z C<br align="left"/>
+      | z<br align="left"/>>]
+}

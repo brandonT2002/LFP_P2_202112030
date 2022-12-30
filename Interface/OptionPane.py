@@ -4,7 +4,6 @@ from tkinter.filedialog import askopenfilename
 from Backend.Controller import Controller
 from Interface.AutomatonPane import AutomatonPane
 from Interface.GrammarPane import GrammarPane
-from Interface.SplashScreen import SplashScreen
 
 class OptionPane(tk.Frame):
     def __init__(self,root,grammar : GrammarPane,automaton : AutomatonPane):
@@ -53,7 +52,6 @@ class OptionPane(tk.Frame):
                 if extension[1] == 'glc':
                     self.ctrl.readFileGLC(archivo)
                     self.ctrl.grammarRecognition()
-                    self.ctrl.showGrammar()
                     self.nameGrammar = []
                     for i in range(len(self.ctrl.grammars)):
                         self.nameGrammar.append(f'{i + 1} - {self.ctrl.grammars[i].name}')
@@ -61,8 +59,6 @@ class OptionPane(tk.Frame):
                 elif extension[1] == 'ap':
                     self.ctrl.readFileAPL(archivo)
                     self.ctrl.automatonRecognition()
-                    #self.ctrl.showAutomaton()
-                    #self.ctrl.stackAutomata
                     self.nameAutomata = []
                     for i in range(len(self.ctrl.stackAutomata)):
                         self.nameAutomata.append(f'{i + 1} - {self.ctrl.stackAutomata[i].name}')

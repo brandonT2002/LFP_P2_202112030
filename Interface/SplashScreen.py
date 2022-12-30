@@ -17,16 +17,11 @@ class SplashScreen:
 
         Frame(w, width=620, height=250, bg='#212325').place(x=0,y=0)
         label1=Label(w, text='Spark Stack\nBrandon Tejaxún - 202112030', fg='white', bg='#212325')
-        #label1.configure(font=("Game Of Squids", 24, "bold"))
         label1.configure(font=('Roboto Medium',24,"bold"))
         label1.place(x=80,y=60)
 
-        #making animation
-
         image_a=ImageTk.PhotoImage(Image.open('Image/c2.png'))
         image_b=ImageTk.PhotoImage(Image.open('Image/c1.png'))
-
-
 
         self.count = 5
         for i in range(5):
@@ -35,7 +30,7 @@ class SplashScreen:
             l3=Label(w, image=image_b, border=0, relief=SUNKEN).place(x=325, y=160)
             l4=Label(w, image=image_b, border=0, relief=SUNKEN).place(x=350, y=160)
 
-            label2=Label(w, text=f'{self.count}', fg='white', bg='#212325') #decorate it 
+            label2=Label(w, text=f'{self.count}', fg='white', bg='#212325')
             label2.configure(font=('Roboto Medium',16))
             label2.place(x=10,y=215)
 

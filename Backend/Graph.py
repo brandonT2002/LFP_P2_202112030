@@ -1,4 +1,5 @@
 from Backend.ATP import ATP
+from Backend.GLC import GLC
 import os
 import webbrowser
 
@@ -11,7 +12,7 @@ class dotReports:
         dot += f'\nEstados: {", ".join(automaton.states)}<br align="left"/>'
         dot += f'\nEstado inicial: {automaton.initialState}<br align="left"/>'
         dot += f'\nEstados de aceptación: {",".join(automaton.acceptingStates)}<br align="left"/>'
-        dot += f'\nProducciones:<br align="left"/>'
+        dot += f'\nTransiciones:<br align="left"/>'
 
         items = ''
         for transition in automaton.transitions:
@@ -93,7 +94,6 @@ class dotReports:
         os.system('dot -Tpdf Reports/ReportPass.txt -o Reports/ReportPass.pdf')
         webbrowser.open('Reports\ReportPass.pdf')
 
-    # def generateStepByStep(self,automaton : ATP,transition : list,name,nameFile):
     def generateStepByStep(self,automaton : ATP,stack,entry,origin,destiny,i):
         dot = 'digraph G {\ngraph [labelloc=t];\nnode [shape=circle style=filled fillcolor="#ffffff"];\nfontsize=30;\nlabel = "' + automaton.name +'";\nrankdir=LR;'
 
@@ -131,4 +131,40 @@ class dotReports:
             report.write(dot)
 
         os.system(f'dot -Tpng Image/Steps/Step{i}.txt -o Image/Steps/Step{i}.png')
-        #webbrowser.open('Image\Step.png')
+
+    def generateGReport(self,grammar : GLC):
+        dot = 'digraph G {\nNode[shape=none];\nlabelloc=t;\nfontsize=30;\nlabel = "' + grammar.name +'";\nL[label=<'
+
+        dot += f'\nNo terminales: {", ".join(grammar.nonTerminals)}<br align="left"/>'
+        dot += f'\nTerminales: {", ".join(grammar.terminals)}<br align="left"/>'
+        dot += f'\nNo terminal inicial: {", ".join(grammar.initialNonTerminal)}<br align="left"/>'
+        dot += f'\nProducciones:<br align="left"/>'
+
+        path = grammar.path
+        for k,v in path.items():
+            dot += f'\n{k} &#62;'
+            for k1,v1 in v.items():
+                if k1 == 'exp0':
+                    if v1['input1']:
+                        dot += ' ' + v1['input1']
+                    if v1['destiny']:
+                        dot += ' ' + v1['destiny']
+                    if v1['input2']:
+                        dot += ' ' + v1['input2']
+                    dot += '<br align="left"/>'
+                else:
+                    dot += '\n      |'
+                    if v1['input1']:
+                        dot += ' ' + v1['input1']
+                    if v1['destiny']:
+                        dot += ' ' + v1['destiny']
+                    if v1['input2']:
+                        dot += ' ' + v1['input2']
+                    dot += '<br align="left"/>'
+        dot += '>]\n}'
+
+        with open('Reports/ReportG.txt','w',encoding='utf-8') as report:
+            report.write(dot)
+
+        os.system('dot -Tpng Reports/ReportG.txt -o Reports/ReportG.png')
+        webbrowser.open('Reports\ReportG.png')
