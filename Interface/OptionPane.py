@@ -4,6 +4,7 @@ from tkinter.filedialog import askopenfilename
 from Backend.Controller import Controller
 from Interface.AutomatonPane import AutomatonPane
 from Interface.GrammarPane import GrammarPane
+from Interface.ExitScreen import ExitScreen
 
 class OptionPane(tk.Frame):
     def __init__(self,root,grammar : GrammarPane,automaton : AutomatonPane):
@@ -34,7 +35,7 @@ class OptionPane(tk.Frame):
         self.automatonMod = Button(master=self,text='Modulo Autómata',font=('Roboto Medium',11),bg='#0059b3',activebackground='#0059b3',foreground='white',activeforeground='white',width=15,height=1,cursor='hand2',command=self.option2)
         self.automatonMod.grid(row=4,column=0,pady=10,padx=20)
 
-        self.exit = Button(master=self,text='Salir',font=('Roboto Medium',11),bg='#D35B58',activebackground='#D35B58',foreground='white',activeforeground='white',width=15,height=1,cursor='hand2',command=quit)
+        self.exit = Button(master=self,text='Salir',font=('Roboto Medium',11),bg='#D35B58',activebackground='#D35B58',foreground='white',activeforeground='white',width=15,height=1,cursor='hand2',command=self.exit)
         self.exit.grid(row=9,column=0,pady=10,padx=20)
 
     def chooseFile(self):
@@ -74,3 +75,7 @@ class OptionPane(tk.Frame):
     def option2(self):
         self.grammar.grid_remove()
         self.automaton.grid()
+
+    def exit(self):
+        ExitScreen()
+        quit()

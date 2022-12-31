@@ -9,15 +9,15 @@ I -> A [label="$,$;#"];
 A -> B [label="a,$;a"];
 B -> B [label="a,$;a"];
 B -> C [label="b,a;$"];
-C -> C [label="b,a;$" fontcolor="#FF1E1E"];
-C -> F [label="$,#;$"];
+C -> C [label="b,a;$"];
+C -> F [label="$,#;$" fontcolor="#FF1E1E"];
 node [shape=record];
 stack [label="
 {<f0> Pila}|
-{<f0> #aa}"
+{<f0> #}"
 ];
 entry [label="
 {<f0> entrada}|
-{<f0> aaabb}"
+{<f0> aaabbb}"
 ];
 }

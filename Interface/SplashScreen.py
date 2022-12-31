@@ -23,14 +23,13 @@ class SplashScreen:
         image_a=ImageTk.PhotoImage(Image.open('Image/c2.png'))
         image_b=ImageTk.PhotoImage(Image.open('Image/c1.png'))
 
-        self.count = 5
-        for i in range(5):
+        for i in range(5,-1,-1):
             l1=Label(w, image=image_a, border=0, relief=SUNKEN).place(x=275, y=160)
             l2=Label(w, image=image_b, border=0, relief=SUNKEN).place(x=300, y=160)
             l3=Label(w, image=image_b, border=0, relief=SUNKEN).place(x=325, y=160)
             l4=Label(w, image=image_b, border=0, relief=SUNKEN).place(x=350, y=160)
 
-            label2=Label(w, text=f'{self.count}', fg='white', bg='#212325')
+            label2=Label(w, text=f'{i}', fg='white', bg='#212325')
             label2.configure(font=('Roboto Medium',16))
             label2.place(x=10,y=215)
 
@@ -57,7 +56,5 @@ class SplashScreen:
             l4=Label(w, image=image_a, border=0, relief=SUNKEN).place(x=350, y=160)
             w.update_idletasks()
             time.sleep(0.2)
-
-            self.count -= 1
 
         w.destroy()

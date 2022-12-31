@@ -7,8 +7,8 @@ rankdir=LR;I;A;B;C;F;B [fillcolor="#83BD75"]
 F [peripheries=2];
 I -> A [label="$,$;#"];
 A -> B [label="a,$;a"];
-B -> B [label="a,$;a"];
-B -> C [label="b,a;$" fontcolor="#FF1E1E"];
+B -> B [label="a,$;a" fontcolor="#FF1E1E"];
+B -> C [label="b,a;$"];
 C -> C [label="b,a;$"];
 C -> F [label="$,#;$"];
 node [shape=record];
@@ -18,6 +18,6 @@ stack [label="
 ];
 entry [label="
 {<f0> entrada}|
-{<f0> aab}"
+{<f0> aaa}"
 ];
 }

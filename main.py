@@ -1,4 +1,4 @@
 from Interface.MainWindow import MainWindow
 from Interface.SplashScreen import SplashScreen
-#SplashScreen()
+SplashScreen()
 MainWindow()
