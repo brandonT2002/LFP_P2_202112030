@@ -1,0 +1,41 @@
+digraph G {
+Node[shape=none];
+Edge[arrowhead=none];
+0 [label = "S" group="0"];
+1 [label = "A" group="0"];
+11 [label = "a" group="1"];
+12 [label = "a" group="2"];
+2 [label = "A" group="0"];
+3 [label = "B" group="0"];
+31 [label = "b" group="1"];
+32 [label = "b" group="2"];
+4 [label = "B" group="0"];
+5 [label = "C" group="0"];
+51 [label = "z" group="1"];
+6 [label = "C" group="0"];
+61 [label = "z" group="1"];
+subgraph {
+rank = same;
+11 -> 2 -> 12[color=none];
+}
+subgraph {
+rank = same;
+31 -> 4 -> 32[color=none];
+}
+subgraph {
+rank = same;
+51 -> 6[color=none];
+}
+0 -> 1;
+1 -> 11;
+1 -> 12;
+1 -> 2;
+2 -> 3;
+3 -> 31;
+3 -> 32;
+3 -> 4;
+4 -> 5;
+5 -> 51;
+5 -> 6;
+6 -> 61;
+}
